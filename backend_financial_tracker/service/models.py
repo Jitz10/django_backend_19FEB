@@ -11,3 +11,4 @@ class Transaction(models.Model):
     end_date = models.DateField()
 
 # Create your models here.
+    

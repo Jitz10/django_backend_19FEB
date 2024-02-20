@@ -1,12 +1,13 @@
 import os
 from pathlib import Path
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = '12345678'
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
+ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -19,15 +20,18 @@ INSTALLED_APPS = [
     'service',
 ]
 
+ALLOWED_HOSTS = ['*']
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware', 
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware', 
 ]
 
 
@@ -88,9 +92,15 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
+    "http://localhost:3000",
+    "https://yourproductiondomain.com",
+    "https://lv9fn4.csb.app",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
+   "http://localhost:3000",
+    "https://yourproductiondomain.com",
+    "https://lv9fn4.csb.app",
 ]
+
+CORS_ALLOW_CREDENTIALS = True
