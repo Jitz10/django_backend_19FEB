@@ -20,5 +20,6 @@ from backend_financial_tracker import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',include('service.urls')),
+    path('form/',views.da),
+    path('dashboard/<str:term>', views.dashboard, name='dashboard'),
 ]

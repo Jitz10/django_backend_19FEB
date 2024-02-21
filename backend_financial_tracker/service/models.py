@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import Count
+
 
 class Transaction(models.Model):
     type = models.CharField(max_length=20,null = True)
@@ -10,5 +12,4 @@ class Transaction(models.Model):
     term = models.CharField(max_length=20,null=True)
     end_date = models.DateField()
 
-# Create your models here.
     
