@@ -7,9 +7,12 @@ from django.views.decorators.http import require_GET
 import random
 from django.conf import settings
 import base64
+import matplotlib
+matplotlib.use('Agg')  # Set the backend to Agg
 import matplotlib.pyplot as plt
 import os
 from django.db import models
+
 @csrf_exempt
 def da(request):
     if request.method == 'POST':
@@ -36,7 +39,7 @@ def da(request):
         weekly_labels = [item['category'] for item in weekly_categories]
         weekly_totals = [item['total'] for item in weekly_categories]
 
-        plt.figure(figsize=(8, 6))
+        plt.figure(figsize=(2,2))
         plt.pie(weekly_totals, labels=weekly_labels, autopct='%1.1f%%', startangle=140)
         plt.axis('equal')
         plt.title('Weekly Transaction Categories')
@@ -49,7 +52,7 @@ def da(request):
         weekly_categories = [item['category'] for item in weekly_amounts]
         weekly_totals = [item['total_amount'] for item in weekly_amounts]
 
-        plt.figure(figsize=(8, 6))
+        plt.figure(figsize=(2,2), facecolor="#333333")
         plt.bar(weekly_categories, weekly_totals)
         plt.xlabel('Weekly Transaction Categories')
         plt.ylabel('Total Amount')
@@ -64,7 +67,7 @@ def da(request):
         monthly_labels = [item['category'] for item in monthly_categories]
         monthly_totals = [item['total'] for item in monthly_categories]
 
-        plt.figure(figsize=(8, 6))
+        plt.figure(figsize=(5,2), facecolor="#333333")
         plt.pie(monthly_totals, labels=monthly_labels, autopct='%1.1f%%', startangle=140)
         plt.axis('equal')
         plt.title('Monthly Transaction Categories')
@@ -77,7 +80,7 @@ def da(request):
         monthly_categories = [item['category'] for item in monthly_amounts]
         monthly_totals = [item['total_amount'] for item in monthly_amounts]
 
-        plt.figure(figsize=(8, 6))
+        plt.figure(figsize=(2,2), facecolor="#333333")
         plt.bar(monthly_categories, monthly_totals)
         plt.xlabel('Monthly Transaction Categories')
         plt.ylabel('Total Amount')
@@ -92,7 +95,7 @@ def da(request):
         yearly_labels = [item['category'] for item in yearly_categories]
         yearly_totals = [item['total'] for item in yearly_categories]
 
-        plt.figure(figsize=(8, 6))
+        plt.figure(figsize=(3, 3), facecolor="#333333")
         plt.pie(yearly_totals, labels=yearly_labels, autopct='%1.1f%%', startangle=140)
         plt.axis('equal')
         plt.title('Yearly Transaction Categories')
@@ -105,7 +108,7 @@ def da(request):
         yearly_categories = [item['category'] for item in yearly_amounts]
         yearly_totals = [item['total_amount'] for item in yearly_amounts]
 
-        plt.figure(figsize=(8, 6))
+        plt.figure(figsize=(8, 6), facecolor="#333333")
         plt.bar(yearly_categories, yearly_totals)
         plt.xlabel('Yearly Transaction Categories')
         plt.ylabel('Total Amount')
@@ -150,15 +153,13 @@ def dashboard(request, term):
         # Calculate balance
         balance = income - expense
 
-        # Read the image file and encode it in base64
-        image_path = settings.BASE_DIR / 'rickroll.jpg'  # Replace with the actual path to your image
-        with open(image_path, 'rb') as image_file:
+        # Read the monthly pie chart image file and encode it in base64
+        monthly_pie_chart_path = os.path.join(os.getcwd(), 'monthly_pie_chart.png')
+        with open(monthly_pie_chart_path, 'rb') as image_file:
             image_url_base64 = f"data:image/png;base64,{base64.b64encode(image_file.read()).decode('utf-8')}"
 
         # Send the response with income, expense, balance, and base64-encoded image URL
         return JsonResponse({'income': income, 'expense': expense, 'balance': balance, 'imageUrlBase64': image_url_base64})
 
     except Exception as e:
-        print('Error handling request:', e)
-        return JsonResponse({'error': 'Internal Server Error'}, status=500)
-
+        pass
